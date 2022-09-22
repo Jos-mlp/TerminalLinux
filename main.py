@@ -6,6 +6,7 @@ def run():
     ruta = (os.getcwd())
     #Este while se utiliza para que siem
     while True:
+        print("")
         #Obtenemos el comando del usuario
         commando = input(ruta + "> ")
         
@@ -26,8 +27,11 @@ def run():
             print ("El sistema operativo de mi ordenador es: "+ os.name) 
         elif (commando == "cd"):
             ruta = os.chdir(os.getcwd())
+        elif(commando == "cd .."):
+            ruta = os.path.dirname(ruta)
+            print (ruta)
         elif (commando == "ls"):
-            for item in os.listdir():
+            for item in os.listdir(ruta):
                 print(item)
         #Este else lo utilizamos para encontrar los comandos variables
         else:
@@ -37,7 +41,8 @@ def run():
             if (comSeparado[0] == "ls"):
                 if (comSeparado[1] == "-a"):
                     if ((len(comSeparado)) == 2):
-                        pass
+                        for item in os.listdir(ruta):
+                            print(item)
                     elif((len(comSeparado)) == 3):
                         pass
 
@@ -46,6 +51,10 @@ def run():
                         pass
                     elif((len(comSeparado)) == 3):
                         pass
+                elif(len(comSeparado) == 2):
+                    for item in os.listdir(comSeparado[1]):
+                        print(item)
+                
 
 
             #Con este comando ejecutamos el comando cd y todas sus variaciones
@@ -65,8 +74,9 @@ def run():
                 if ((len(comSeparado)) == 2):
                     #Utilizamos un try para capturar algun error
                     try:
+                        path = os.path.join(ruta,comSeparado[1])
                         #Borramos el directorio
-                        os.remove(comSeparado[1])
+                        os.remove(path)
                     except OSError as e:  ## si falla retorna el error
                         print ("ERROR: %s - %s." % (e.filename, e.strerror))
                 else:
@@ -78,8 +88,9 @@ def run():
                 if ((len(comSeparado)) == 2):
                     #Utilizamos un try para capturar algun error
                     try:
-                        #Creamos un nuevo directorio con el nombre que el usuario ingreso
-                        os.mkdir(comSeparado[1])
+                        path = os.path.join(ruta,comSeparado[1])
+                        #Creamos un nuevo directorio en ruta con el nombre que el usuario ingreso
+                        os.mkdir(path)
                     except OSError as e:  ## si falla retorna el error
                         print ("ERROR: %s - %s." % (e.filename, e.strerror))
                 else:
@@ -91,8 +102,9 @@ def run():
                 if ((len(comSeparado)) == 2):
                     #Utilizamos un try para capturar algun error
                     try:
+                        path = os.path.join(ruta,comSeparado[1])
                         #Borramos el directorio
-                        os.rmdir(comSeparado[1])
+                        os.rmdir(path)
                     except OSError as e:  ## si falla retorna el error
                         print ("ERROR: %s - %s." % (e.filename, e.strerror))
                 else:
