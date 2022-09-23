@@ -1,4 +1,6 @@
 import os
+import platform
+import sys
 from datetime import datetime
 from warnings import catch_warnings
 import win32api
@@ -24,9 +26,22 @@ def run():
         elif (commando == "clear"):
             BorrarPantalla()
         elif (commando == "man"):
-            pass
+            print("--COMANDOS ACEPTADOS--")
+            print("pwd: Muestra el directorio activo")
+            print("date: Muestra la fecha")
+            print("time: Muestra la hora")
+            print("exit: sale del intérprete")
+            print("clear: borra pantalla")
+            print("cd [..] [Directorio]: Cambia el directorio activo")
+            print("uname -a: versión del OS")
+            print("ls -[a][l] [Directorio]: Muestra el contenido del directorio especificado o, en caso de no especificar ninguno, el directorio activo")
+            print("rm [Archivo]: Borra archivos")
+            print("touch [Archivo]: Crea archivos")
+            print("mkdir [Directorio]: Crea un directorio")
+            print("rmdir [Directorio]: Borra un directorio")
         elif (commando == "uname -a"):
-            print ("El sistema operativo de mi ordenador es: "+ os.name) 
+            print(sys.platform)
+            print (platform.platform()) 
         elif (commando == "cd"):
             ruta = os.getcwd()
             os.chdir(ruta)
@@ -60,6 +75,8 @@ def run():
                         except OSError as e:  ## si falla retorna el error
                             print ("ERROR: " + str(e.strerror))
                             os.chdir(ruta)
+                    else:
+                        print("ERROR: Comando desconocido")
 
 
                 #Sirve para imprimir en formato largo elementos de los archivos
@@ -83,6 +100,8 @@ def run():
                         except OSError as e:  ## si falla retorna el error
                             print ("ERROR: " + str(e.strerror))
                             os.chdir(ruta)
+                    else:
+                        print("ERROR: Comando desconocido")
                             
 
                 elif(comSeparado[1] == "-al"):
@@ -103,6 +122,8 @@ def run():
                         except OSError as e:  ## si falla retorna el error
                             print ("ERROR: " + str(e.strerror))
                             os.chdir(ruta)
+                    else:
+                        print("ERROR: Comando desconocido")
 
                 #Sirve para imprimir cuando se pasa el nombre de un directorio sin banderas
                 elif(len(comSeparado) == 2):
@@ -115,6 +136,8 @@ def run():
                     except OSError as e:  ## si falla retorna el error
                         print ("ERROR: " + str(e.strerror))
                         os.chdir(ruta)
+                else:
+                    print("ERROR: Comando desconocido")
                     
 
 
@@ -144,6 +167,11 @@ def run():
                 else:
                     print("ERROR: Comando desconocido")
 
+            #Con este comando creamos un archivo con la extension que querramos
+            elif(comSeparado[0] == "touch"):
+                path = os.path.join(ruta,comSeparado[1])
+                file = open(path, "w")
+                file. close()
 
             #Con este comando ejecutamos el comando mkdir y todas sus variaciones
             elif (comSeparado[0] == "mkdir"):
@@ -171,6 +199,8 @@ def run():
                         print ("ERROR: %s - %s." % (e.filename, e.strerror))
                 else:
                     print("ERROR: Comando desconocido")
+            else:
+                print("ERROR: Comando desconocido")
 
 
 def ConvertirLista(cadena): #Crea tokens de una cadena de texto
