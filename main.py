@@ -52,11 +52,14 @@ def run():
                             print(item)
                     #Regresa los datos cuando se envia directorio
                     elif((len(comSeparado)) == 3):
-                        path = os.path.join(ruta,comSeparado[2]) #Path se utiliza opara crear una ruta temporal
-                        os.chdir(path)
-                        for item in os.listdir(path):
-                            print(item)
-                        os.chdir(ruta)
+                        try:
+                            path = os.path.join(ruta,comSeparado[2]) #Path se utiliza opara crear una ruta temporal
+                            os.chdir(path)
+                            for item in os.listdir(path):
+                                print(item)
+                        except OSError as e:  ## si falla retorna el error
+                            print ("ERROR: " + str(e.strerror))
+                            os.chdir(ruta)
 
 
                 #Sirve para imprimir en formato largo elementos de los archivos
@@ -69,14 +72,17 @@ def run():
                             print()
 
                     elif((len(comSeparado)) == 3):
-                        #Regresa los datos cuando se envia directorio
-                        path = os.path.join(ruta,comSeparado[2]) #Path se utiliza opara crear una ruta temporal
-                        os.chdir(path)
-                        list = [f for f in os.listdir(path) if (DirOculto(f) == 0)]
-                        for item in list:
-                            ArcivosConMetadatos(item)
-                            print()
-                        os.chdir(ruta)
+                        try:
+                            #Regresa los datos cuando se envia directorio
+                            path = os.path.join(ruta,comSeparado[2]) #Path se utiliza opara crear una ruta temporal
+                            os.chdir(path)
+                            list = [f for f in os.listdir(path) if (DirOculto(f) == 0)]
+                            for item in list:
+                                ArcivosConMetadatos(item)
+                                print()
+                        except OSError as e:  ## si falla retorna el error
+                            print ("ERROR: " + str(e.strerror))
+                            os.chdir(ruta)
                             
 
                 elif(comSeparado[1] == "-al"):
@@ -87,22 +93,29 @@ def run():
                             print()
 
                     elif((len(comSeparado)) == 3):
+                        try:
                         #Regresa los datos cuando se envia directorio
-                        path = os.path.join(ruta,comSeparado[2])
-                        os.chdir(path)
-                        for item in os.listdir(path):
-                            ArcivosConMetadatos(item)
-                            print()
-                        os.chdir(ruta)
+                            path = os.path.join(ruta,comSeparado[2])
+                            os.chdir(path)
+                            for item in os.listdir(path):
+                                ArcivosConMetadatos(item)
+                                print()
+                        except OSError as e:  ## si falla retorna el error
+                            print ("ERROR: " + str(e.strerror))
+                            os.chdir(ruta)
 
                 #Sirve para imprimir cuando se pasa el nombre de un directorio sin banderas
                 elif(len(comSeparado) == 2):
-                    path = os.path.join(ruta,comSeparado[1])
-                    os.chdir(path)
-                    list = [f for f in os.listdir(path) if (DirOculto(f) == 0)]
-                    for item in list:
-                        print(item)
-                    os.chdir(ruta)
+                    try:
+                        path = os.path.join(ruta,comSeparado[1])
+                        os.chdir(path)   
+                        list = [f for f in os.listdir(path) if (DirOculto(f) == 0)]
+                        for item in list:
+                            print(item)
+                    except OSError as e:  ## si falla retorna el error
+                        print ("ERROR: " + str(e.strerror))
+                        os.chdir(ruta)
+                    
 
 
             #Con este comando ejecutamos el comando cd y todas sus variaciones
