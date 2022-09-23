@@ -1,6 +1,8 @@
 import os
 from datetime import datetime
 from warnings import catch_warnings
+import win32api
+import win32con
 #from pathlib import Path
 def run():
     ruta = (os.getcwd())
@@ -26,35 +28,81 @@ def run():
         elif (commando == "uname -a"):
             print ("El sistema operativo de mi ordenador es: "+ os.name) 
         elif (commando == "cd"):
-            ruta = os.chdir(os.getcwd())
+            ruta = os.getcwd()
+            os.chdir(ruta)
         elif(commando == "cd .."):
-            ruta = os.path.dirname(ruta)
-            print (ruta)
+            ruta = os.path.dirname(os.getcwd())
+            os.chdir(ruta)
         elif (commando == "ls"):
-            for item in os.listdir(ruta):
+            list = [f for f in os.listdir(ruta) if (DirOculto(f) == 0)]
+            for item in list:
                 print(item)
+
         #Este else lo utilizamos para encontrar los comandos variables
         else:
             #Con la funcion ConvertirLista separamos la cadena en palabras
             comSeparado = ConvertirLista(commando)
             #Con este bloque ejecutamos el comando ls y todas sus variaciones
             if (comSeparado[0] == "ls"):
+                #Sirve para imprimir todos los archivos ocultos
                 if (comSeparado[1] == "-a"):
+                    #Regresa los datos cuando no se envia directorio
                     if ((len(comSeparado)) == 2):
                         for item in os.listdir(ruta):
                             print(item)
+                    #Regresa los datos cuando se envia directorio
                     elif((len(comSeparado)) == 3):
-                        pass
+                        path = os.path.join(ruta,comSeparado[2]) #Path se utiliza opara crear una ruta temporal
+                        os.chdir(path)
+                        for item in os.listdir(path):
+                            print(item)
+                        os.chdir(ruta)
 
+
+                #Sirve para imprimir en formato largo elementos de los archivos
                 elif (comSeparado[1] == "-l"):
+                    #Regresa los datos cuando no se envia directorio
                     if ((len(comSeparado)) == 2):
-                        pass
+                        list = [f for f in os.listdir(ruta) if (DirOculto(f) == 0)]
+                        for item in list:
+                            ArcivosConMetadatos(item)
+                            print()
+
                     elif((len(comSeparado)) == 3):
-                        pass
+                        #Regresa los datos cuando se envia directorio
+                        path = os.path.join(ruta,comSeparado[2]) #Path se utiliza opara crear una ruta temporal
+                        os.chdir(path)
+                        list = [f for f in os.listdir(path) if (DirOculto(f) == 0)]
+                        for item in list:
+                            ArcivosConMetadatos(item)
+                            print()
+                        os.chdir(ruta)
+                            
+
+                elif(comSeparado[1] == "-al"):
+                    #Regresa los datos cuando no se envia directorio
+                    if ((len(comSeparado)) == 2):
+                        for item in os.listdir(ruta):
+                            ArcivosConMetadatos(item)
+                            print()
+
+                    elif((len(comSeparado)) == 3):
+                        #Regresa los datos cuando se envia directorio
+                        path = os.path.join(ruta,comSeparado[2])
+                        os.chdir(path)
+                        for item in os.listdir(path):
+                            ArcivosConMetadatos(item)
+                            print()
+                        os.chdir(ruta)
+
+                #Sirve para imprimir cuando se pasa el nombre de un directorio sin banderas
                 elif(len(comSeparado) == 2):
-                    for item in os.listdir(comSeparado[1]):
+                    path = os.path.join(ruta,comSeparado[1])
+                    os.chdir(path)
+                    list = [f for f in os.listdir(path) if (DirOculto(f) == 0)]
+                    for item in list:
                         print(item)
-                
+                    os.chdir(ruta)
 
 
             #Con este comando ejecutamos el comando cd y todas sus variaciones
@@ -64,6 +112,7 @@ def run():
                     if (os.path.exists(os.path.join(ruta, comSeparado[1])) == True):
                         #Entra a la carpeta que le especifiquemos
                         ruta = os.path.join(ruta, comSeparado[1])
+                        os.chdir(ruta)
                     else: print("ERROR: Este directorio NO existe")
                 else:
                     print("ERROR: Comando desconocido")
@@ -119,6 +168,18 @@ def BorrarPantalla(): #Detecta que sistema operativo usamos para limpiar la pant
         os.system("clear")
     elif os.name == "ce" or os.name == "nt" or os.name == "dos":
         os.system("cls")
+
+def ArcivosConMetadatos(ruta):
+    metadata = os.stat(ruta)
+    ultima_mod = datetime.utcfromtimestamp(metadata.st_mtime).strftime('%Y/%m/%d')
+    print("Ultima modificacion: "+ str(ultima_mod) +"  "+ str(metadata.st_size) + " byte" + "  " + ruta) 
+
+def DirOculto(p):
+    if os.name== 'nt':
+        attribute = win32api.GetFileAttributes(p)
+        return attribute & (win32con.FILE_ATTRIBUTE_HIDDEN | win32con.FILE_ATTRIBUTE_SYSTEM)
+    else:
+        return p.startswith('.') #linux-osx
 
 
 if __name__ == "__main__":
