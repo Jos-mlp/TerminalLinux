@@ -3,8 +3,9 @@ import platform
 import sys
 from datetime import datetime
 from warnings import catch_warnings
-import win32api
-import win32con
+if (os.name== 'nt'):
+    import win32api
+    import win32con
 #from pathlib import Path
 def run():
     ruta = (os.getcwd())
@@ -86,7 +87,7 @@ def run():
                         list = [f for f in os.listdir(ruta) if (DirOculto(f) == 0)]
                         for item in list:
                             ArcivosConMetadatos(item)
-                            print()
+                            
 
                     elif((len(comSeparado)) == 3):
                         try:
@@ -96,7 +97,7 @@ def run():
                             list = [f for f in os.listdir(path) if (DirOculto(f) == 0)]
                             for item in list:
                                 ArcivosConMetadatos(item)
-                                print()
+                                
                         except OSError as e:  ## si falla retorna el error
                             print ("ERROR: " + str(e.strerror))
                             os.chdir(ruta)
@@ -109,7 +110,7 @@ def run():
                     if ((len(comSeparado)) == 2):
                         for item in os.listdir(ruta):
                             ArcivosConMetadatos(item)
-                            print()
+                            
 
                     elif((len(comSeparado)) == 3):
                         try:
@@ -118,7 +119,7 @@ def run():
                             os.chdir(path)
                             for item in os.listdir(path):
                                 ArcivosConMetadatos(item)
-                                print()
+                                
                         except OSError as e:  ## si falla retorna el error
                             print ("ERROR: " + str(e.strerror))
                             os.chdir(ruta)
