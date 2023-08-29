@@ -16,17 +16,22 @@ def run():
         commando = input(ruta + "> ")
         
         #Con condicionales obtenemos el comando que quiere ejecutar el usuario
-        if (commando == "pwd"):
+        if (commando == "pwd"): #imprime la ruta
             print(ruta)
-        elif (commando == "date"):
+
+        elif (commando == "date"): #imprime la fecha actual
             print("La fecha actual es:", datetime.now().date())
-        elif (commando == "time"):
+
+        elif (commando == "time"): #imprime la hora actual
             print("La hora actual es:", datetime.now().time())
-        elif (commando == "exit"):
+
+        elif (commando == "exit"): #Cierra la terminal
             break
-        elif (commando == "clear"):
+
+        elif (commando == "clear"): #Limpia la pantalla
             BorrarPantalla()
-        elif (commando == "man"):
+
+        elif (commando == "man"): #Imprime las opciones disponibles
             print("--COMANDOS ACEPTADOS--")
             print("pwd: Muestra el directorio activo")
             print("date: Muestra la fecha")
@@ -40,16 +45,20 @@ def run():
             print("touch [Archivo]: Crea archivos")
             print("mkdir [Directorio]: Crea un directorio")
             print("rmdir [Directorio]: Borra un directorio")
-        elif (commando == "uname -a"):
+
+        elif (commando == "uname -a"): #Muestra informacion sobre la plataforma del SO
             print(sys.platform)
             print (platform.platform()) 
-        elif (commando == "cd"):
+
+        elif (commando == "cd"): 
             ruta = os.getcwd()
             os.chdir(ruta)
-        elif(commando == "cd .."):
+
+        elif(commando == "cd .."): #Retorna una carpeta en la terminal
             ruta = os.path.dirname(os.getcwd())
             os.chdir(ruta)
-        elif (commando == "ls"):
+
+        elif (commando == "ls"): #imprime los archivos normales en la ruta
             list = [f for f in os.listdir(ruta) if (DirOculto(f) == 0)]
             for item in list:
                 print(item)
