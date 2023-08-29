@@ -12,11 +12,11 @@ Este es un proyecto de un intérprete de línea de comandos básico en Python qu
     cd TerminalLinux
 3. Instala todas las dependecias necesarias.
 	```bash
-    cd TerminalLinux
+    pip install -r requirements.txt
 4. Ejecuta el script Python:
 
     ```bash
-    python interpreter.py
+    python main.py
     ```
 
 5. Aparecerá un prompt en la terminal. Puedes ingresar los comandos disponibles para interactuar con el intérprete.
